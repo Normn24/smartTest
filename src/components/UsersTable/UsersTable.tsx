@@ -1,6 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { fetchUsers, filterUsers } from '../../redux/usersSlice/userSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks/useAppDispatch';
+import {
+  TextField,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Container,
+  Box,
+  Typography,
+} from '@mui/material';
 
 function UserTable() {
   const dispatch = useAppDispatch();  
@@ -33,35 +46,78 @@ function UserTable() {
   };
 
   return (
-    <div>
-      <h1>User Management Table</h1>
-      <div>
-        <input name="name" placeholder="Filter by Name" onChange={handleFilterChange} />
-        <input name="username" placeholder="Filter by Username" onChange={handleFilterChange} />
-        <input name="email" placeholder="Filter by Email" onChange={handleFilterChange} />
-        <input name="phone" placeholder="Filter by Phone" onChange={handleFilterChange} />
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Phone</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map(user => (
-            <tr key={user.id}>
-              <td>{user.name}</td>
-              <td>{user.username}</td>
-              <td>{user.email}</td>
-              <td>{user.phone}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <Container>
+      <Box sx={{ display: 'flex', gap: 2, margin: "24px 0" }}>
+        <TextField
+          name="name"
+          label="Filter by Name"
+          variant="outlined"
+          type='text'
+          fullWidth
+          onChange={handleFilterChange}
+        />
+        <TextField
+          name="username"
+          label="Filter by Username"
+          variant="outlined"
+          fullWidth
+          onChange={handleFilterChange}
+        />
+        <TextField
+          name="email"
+          label="Filter by Email"
+          variant="outlined"
+          fullWidth
+          onChange={handleFilterChange}
+        />
+        <TextField
+          name="phone"
+          label="Filter by Phone"
+          variant="outlined"
+          fullWidth
+          onChange={handleFilterChange}
+        />
+      </Box>
+      <TableContainer component={Paper} elevation={6}>
+        <Table >
+          <TableHead>
+            <TableRow sx={{bgcolor: "#000"}}>
+              <TableCell sx={{ width: "200px", color: "#ffff", fontWeight: 700}}>Name</TableCell>
+              <TableCell sx={{ width: "200px", color: "#ffff", fontWeight: 700}}>Username</TableCell>
+              <TableCell sx={{ width: "200px", color: "#ffff", fontWeight: 700}}>Email</TableCell>
+              <TableCell sx={{ width: "200px", color: "#ffff", fontWeight: 700}}>Phone</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            
+            {users.length ? users.map((user) => (
+              <TableRow key={user.id}>
+                <TableCell>{user.name}</TableCell>
+                <TableCell>{user.username}</TableCell>
+                <TableCell>{user.email}</TableCell>
+                <TableCell>{user.phone}</TableCell>
+              </TableRow>
+            )) : 
+          
+            <TableRow >
+              <TableCell colSpan={4}> 
+              <Typography
+          sx={{
+            textAlign: "center",
+          }}
+          component="p"
+        >
+                OOPS, THERE`S NOTHING TO SHOW HERE
+                <br />
+                There are 0 items which will match the filters you have applied above
+                </Typography>
+              </TableCell>
+            </TableRow>
+            }
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Container>
   );
 };
 
