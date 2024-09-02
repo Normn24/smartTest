@@ -33,13 +33,16 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     filterUsers: (state, action) => {
-      const { name, username, email, phone } = action.payload;
-      state.filteredUsers = state.users.filter(user =>
-        user.name?.toLowerCase().includes(name?.toLowerCase()) &&
-        user.username?.toLowerCase().includes(username?.toLowerCase()) &&
-        user.email?.toLowerCase().includes(email?.toLowerCase()) &&
-        user.phone?.includes(phone)
-      );
+      const { name = '', username = '', email = '', phone = '' } = action.payload;
+      return {
+        ...state,
+        filteredUsers: [...state.users].filter(user =>
+          user.name.toLowerCase().includes(name.toLowerCase()) &&
+          user.username.toLowerCase().includes(username.toLowerCase()) &&
+          user.email.toLowerCase().includes(email.toLowerCase()) &&
+          user.phone.includes(phone)
+        )
+     };
     },
   },
   extraReducers: (builder) => {

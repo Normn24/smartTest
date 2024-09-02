@@ -1,23 +1,35 @@
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
+import React, { useEffect, useState } from 'react';
 import { fetchUsers, filterUsers } from '../../redux/usersSlice/userSlice';
-import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useAppDispatch, useAppSelector } from '../../hooks/useAppDispatch';
 
-const UserTable: React.FC = () => {
-  const dispatch = useAppDispatch();  // Используем кастомный хук
-  const users = useSelector((state: RootState) => state.users.filteredUsers);
-  const status = useSelector((state: RootState) => state.users.status);
+function UserTable() {
+  const dispatch = useAppDispatch();  
+  const users = useAppSelector((state) => state.users.filteredUsers);
+  const status = useAppSelector((state) => state.users.status);
+
+  const [filters, setFilters] = useState({
+    name: '',
+    username: '',
+    email: '',
+    phone: '',
+  });
 
   useEffect(() => {
     if (status === 'idle') {
-      dispatch(fetchUsers());  // Теперь dispatch работает корректно
+      dispatch(fetchUsers());  
     }
   }, [status, dispatch]);
 
+  useEffect(() => {
+    dispatch(filterUsers(filters));
+  }, [filters, dispatch]);
+
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    dispatch(filterUsers({ [name]: value }));
+    setFilters({
+      ...filters,
+      [name]: value,
+    });
   };
 
   return (
