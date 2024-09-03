@@ -15,7 +15,7 @@ import {
   Typography,
 } from '@mui/material';
 
-function UserTable() {
+function UsersTable() {
   const dispatch = useAppDispatch();  
   const users = useAppSelector((state) => state.users.filteredUsers);
   const status = useAppSelector((state) => state.users.status);
@@ -33,7 +33,7 @@ function UserTable() {
     }
   }, [status, dispatch]);
 
-  useEffect(() => {
+  useEffect(() => { 
     dispatch(filterUsers(filters));
   }, [filters, dispatch]);
 
@@ -44,7 +44,7 @@ function UserTable() {
       [name]: value,
     });
   };
-
+  
   return (
     <Container>
       <Box sx={{ display: 'flex', gap: 2, margin: "24px 0" }}>
@@ -52,7 +52,6 @@ function UserTable() {
           name="name"
           label="Filter by Name"
           variant="outlined"
-          type='text'
           fullWidth
           onChange={handleFilterChange}
         />
@@ -89,31 +88,27 @@ function UserTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            
-            {users.length ? users.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.username}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>{user.phone}</TableCell>
+
+            {users.length ? 
+              users.map((user) => (
+                <TableRow key={user.id}>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell>{user.username}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.phone}</TableCell>
+                </TableRow>
+              )) : 
+              <TableRow >
+                <TableCell colSpan={4}> 
+                  <Typography sx={{ textAlign: "center" }} component="p">
+                    OOPS, THERE`S NOTHING TO SHOW HERE
+                    <br />
+                    There are 0 items which will match the filters you have applied above
+                  </Typography>
+                </TableCell>
               </TableRow>
-            )) : 
-          
-            <TableRow >
-              <TableCell colSpan={4}> 
-              <Typography
-          sx={{
-            textAlign: "center",
-          }}
-          component="p"
-        >
-                OOPS, THERE`S NOTHING TO SHOW HERE
-                <br />
-                There are 0 items which will match the filters you have applied above
-                </Typography>
-              </TableCell>
-            </TableRow>
             }
+
           </TableBody>
         </Table>
       </TableContainer>
@@ -121,4 +116,4 @@ function UserTable() {
   );
 };
 
-export default UserTable;
+export default UsersTable;
